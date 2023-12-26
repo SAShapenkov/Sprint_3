@@ -20,4 +20,5 @@ WebDriverWait(driver, 3).until(expected_conditions.visibility_of_element_located
 expected_title =  f"Такой пользователь уже существует"
 fact_title = driver.find_element(By.CSS_SELECTOR, "#root > div > main > div > p")
 assert fact_title.text == expected_title
+driver.quite()
 

@@ -28,3 +28,4 @@ driver.find_element(By.CSS_SELECTOR, "#root > div > main > div > form > button")
 # проверка редиректа на главную страницу
 current_url = driver.current_url
 assert current_url == 'https://stellarburgers.nomoreparties.site/'
+driver.quite()
