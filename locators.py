@@ -9,7 +9,6 @@ class Locators:
  PASSWORD_REGISTRATION = (By.XPATH, ".//*[@name='Пароль']") # пароль при регистрации
 
  # кнопки страницы
- BUTTON_LOGIN_ACCOUNT = (By.XPATH, ".//button[text()='Войти в аккаунт']") # войти в аккаунт
  LOGIN_BUTTON = (By.XPATH, './/form/button') # войти после ввода данных
  PLACE_ORDER = (By.XPATH, ".//button[text()='Оформить заказ']") # оформить заказ
  LK_BUTTON = (By.XPATH, ".//p[contains(text(),'Личный Кабинет')]") # личный кабинет
@@ -19,7 +18,6 @@ class Locators:
  BUTTON_ENTER_ACCOUNT_FROM_RESTORE_FORM = (By.XPATH, "//a[text()='Войти']")  # Кнопка входа в аккаунт на форме восстановления пароля
  RECOVER_PASSWORD = (By.XPATH, ".//a[text()='Восстановить пароль']") # восстановить пароль
  LOGOUT_PERSONAL_ACCOUNT = (By.XPATH, "//button[text()='Выход']") # выход из личного кабинета
- LOGGING_AFTER_EXITING = (By.XPATH, ".//form/button") # кнопка войти
  CONSTRUCTOR_BUTTON = (By.XPATH, "//p[text()='Конструктор']") # кнопка "Конструктор"
  LOGO = (By.XPATH, ".//div[@class='AppHeader_header__logo__2D0X2']") # кнопка "Логотип"
  SAUCES_BUTTON = (By.XPATH, ".//section[1]/div[1]/div[2]") # кнопка "Соусы"
