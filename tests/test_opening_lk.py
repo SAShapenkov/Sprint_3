@@ -3,28 +3,31 @@ from selenium import webdriver
 from selenium.webdriver.support.wait import WebDriverWait
 from selenium.webdriver.support import expected_conditions
 from constants import Constants
-from time import sleep
+from locators import Locators
 
-driver = webdriver.Chrome()
-driver.get("https://stellarburgers.nomoreparties.site/login")
 
-# ожидание появления формы авторизации
-WebDriverWait(driver, 3).until(expected_conditions.visibility_of_element_located((By.CLASS_NAME, "Auth_login__3hAey")))
+class TestLK:
+    def test_LK_link(self, driver):
+        driver.get("https://stellarburgers.nomoreparties.site/login")
+        # ожидание появления формы авторизации
+        WebDriverWait(driver, 3).until(
+            expected_conditions.visibility_of_element_located((By.CLASS_NAME, "Auth_login__3hAey")))
+        # авторизация
+        driver.find_element(*Locators.LOGIN_FIELD).send_keys(Constants.TEST_EMAIL)
+        driver.find_element(*Locators.PASSWORD_FIELD).send_keys(Constants.PASSWORD)
+        driver.find_element(*Locators.LOGIN_BUTTON).click()
 
-# Авторизация
-driver.find_element(By.NAME, "name").send_keys(Constants.TEST_EMAIL)
-driver.find_element(By.NAME, "Пароль").send_keys(Constants.PASSWORD)
-driver.find_element(By.CSS_SELECTOR, "#root > div > main > div > form > button").click()
+        # ожидание появления кнопки
+        WebDriverWait(driver, 3).until(
+            expected_conditions.visibility_of_element_located((By.XPATH, ".//p[contains(text(),'Личный Кабинет')]")))
 
-# ожидание появления кнопки
-WebDriverWait(driver, 3).until(expected_conditions.visibility_of_element_located((By.CSS_SELECTOR, "#root > div > header > nav > a > p")))
-# переход в личный кабинет по кнопке Личный кабинет
-driver.find_element(By.CSS_SELECTOR, "#root > div > header > nav > a > p").click()
+        # переход в личный кабинет по кнопке Личный кабинет
+        driver.find_element(*Locators.LK_BUTTON).click()
 
-# ожидание появления списка пунктов в кабинете
-WebDriverWait(driver, 3).until(expected_conditions.visibility_of_element_located((By.CLASS_NAME, "Account_listItem__35dAP")))
-
+        # ожидание появления списка пунктов в кабинете
+        WebDriverWait(driver, 3).until(
+            expected_conditions.visibility_of_element_located((By.CLASS_NAME, "Account_listItem__35dAP")))
 # проверка редиректа в личный кабинет
-current_url = driver.current_url
-assert current_url == 'https://stellarburgers.nomoreparties.site/account/profile'
-driver.quite()
+        current_url = driver.current_url
+        assert current_url == 'https://stellarburgers.nomoreparties.site/account/profile'
+        driver.quit()

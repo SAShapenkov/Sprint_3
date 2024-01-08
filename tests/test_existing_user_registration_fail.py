@@ -3,22 +3,26 @@ from selenium import webdriver
 from selenium.webdriver.support.wait import WebDriverWait
 from selenium.webdriver.support import expected_conditions
 from constants import Constants
+from locators import Locators
 
-driver = webdriver.Chrome()
-driver.get("https://stellarburgers.nomoreparties.site/register")
+class TestExistingReg:
+    def test_existing_user_registration(self, driver):
+
+        driver.get("https://stellarburgers.nomoreparties.site/register")
 
 # Заполнение полей регистрации
-driver.find_element(By.XPATH, ".//div/main/div/form/fieldset[1]/div/div/input").send_keys(Constants.NAME)
-driver.find_element(By.XPATH, ".//div/main/div/form/fieldset[2]/div/div/input").send_keys(Constants.EXIST_EMAIL)
-driver.find_element(By.XPATH, ".//div/main/div/form/fieldset[3]/div/div/input").send_keys(Constants.PASSWORD)
-driver.find_element(By.CSS_SELECTOR, "#root > div > main > div > form > button").click()
+
+        driver.find_element(*Locators.NAME_REGISTRATION).send_keys(Constants.NAME)
+        driver.find_element(*Locators.EMAIL_REGISTRATION).send_keys(Constants.EXIST_EMAIL)
+        driver.find_element(*Locators.PASSWORD_REGISTRATION).send_keys(Constants.PASSWORD)
+        driver.find_element(*Locators.REGISTRATION_BUTTON).click()
 
 # ожидание появления ошибки
-WebDriverWait(driver, 3).until(expected_conditions.visibility_of_element_located((By.CSS_SELECTOR, "#root > div > main > div > p")))
+        WebDriverWait(driver, 3).until(expected_conditions.visibility_of_element_located((By.CSS_SELECTOR, "#root > div > main > div > p")))
 
 # Проверка корректности текста ошибки
-expected_title =  f"Такой пользователь уже существует"
-fact_title = driver.find_element(By.CSS_SELECTOR, "#root > div > main > div > p")
-assert fact_title.text == expected_title
-driver.quite()
+        expected_title =  f"Такой пользователь уже существует"
+        fact_title = driver.find_element(*Locators.EXISTING_USER)
+        assert fact_title.text == expected_title
+        driver.quit()
 

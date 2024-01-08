@@ -3,30 +3,32 @@ from selenium import webdriver
 from selenium.webdriver.support.wait import WebDriverWait
 from selenium.webdriver.support import expected_conditions
 from constants import Constants
-from time import sleep
+from locators import Locators
+class TestLK:
+    def test_LK_link(self, driver):
+        driver.get("https://stellarburgers.nomoreparties.site/login")
+        # ожидание появления формы авторизации
+        WebDriverWait(driver, 3).until(
+            expected_conditions.visibility_of_element_located((By.CLASS_NAME, "Auth_login__3hAey")))
+        # авторизация
+        driver.find_element(*Locators.LOGIN_FIELD).send_keys(Constants.TEST_EMAIL)
+        driver.find_element(*Locators.PASSWORD_FIELD).send_keys(Constants.PASSWORD)
+        driver.find_element(*Locators.LOGIN_BUTTON).click()
 
-driver = webdriver.Chrome()
-driver.get("https://stellarburgers.nomoreparties.site/login")
+        # ожидание появления кнопки
+        WebDriverWait(driver, 3).until(
+            expected_conditions.visibility_of_element_located((By.XPATH, ".//p[contains(text(),'Личный Кабинет')]")))
 
-# ожидание появления формы авторизации
-WebDriverWait(driver, 3).until(expected_conditions.visibility_of_element_located((By.CLASS_NAME, "Auth_login__3hAey")))
+        # переход в личный кабинет по кнопке Личный кабинет
+        driver.find_element(*Locators.LK_BUTTON).click()
 
-# Авторизация
-driver.find_element(By.NAME, "name").send_keys(Constants.TEST_EMAIL)
-driver.find_element(By.NAME, "Пароль").send_keys(Constants.PASSWORD)
-driver.find_element(By.CSS_SELECTOR, "#root > div > main > div > form > button").click()
-
-# ожидание появления кнопки
-WebDriverWait(driver, 3).until(expected_conditions.visibility_of_element_located((By.CSS_SELECTOR, "#root > div > header > nav > a > p")))
-# переход в личный кабинет по кнопке Личный кабинет
-driver.find_element(By.CSS_SELECTOR, "#root > div > header > nav > a > p").click()
-
-# ожидание появления списка пунктов в кабинете
-WebDriverWait(driver, 3).until(expected_conditions.visibility_of_element_located((By.CLASS_NAME, "Account_listItem__35dAP")))
+        # ожидание появления списка пунктов в кабинете
+        WebDriverWait(driver, 3).until(
+            expected_conditions.visibility_of_element_located((By.CLASS_NAME, "Account_listItem__35dAP")))
 
 # нажатие на кнопку Конструктор
-driver.find_element(By.XPATH, ".//div/header/nav/ul/li[1]/a").click()
+        driver.find_element(*Locators.CONSTRUCTOR_BUTTON).click()
 
 # проверка редиректа в конструктор
-assert driver.find_element(By.CLASS_NAME, "AppHeader_header__logo__2D0X2")
-driver.quite()
+        assert driver.find_element(*Locators.LOGO)
+        driver.quit()

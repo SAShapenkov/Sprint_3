@@ -3,21 +3,23 @@ from selenium import webdriver
 from selenium.webdriver.support.wait import WebDriverWait
 from selenium.webdriver.support import expected_conditions
 from constants import Constants
+from locators import Locators
 
-driver = webdriver.Chrome()
-driver.get("https://stellarburgers.nomoreparties.site/register")
-
-# Заполнение полей регистрации
-driver.find_element(By.XPATH, ".//div/main/div/form/fieldset[1]/div/div/input").send_keys(Constants.NAME)
-driver.find_element(By.XPATH, ".//div/main/div/form/fieldset[2]/div/div/input").send_keys(Constants.TEST_EMAIL)
-driver.find_element(By.XPATH, ".//div/main/div/form/fieldset[3]/div/div/input").send_keys(Constants.SHORT_PASSWORD)
-driver.find_element(By.CSS_SELECTOR, "#root > div > main > div > form > button").click()
+class TestShortPassReg:
+    def test_short_pass_registration(self, driver):
+        driver.get("https://stellarburgers.nomoreparties.site/login")
+# ожидание появления формы авторизации
+        WebDriverWait(driver, 3).until(expected_conditions.visibility_of_element_located((By.CLASS_NAME, "Auth_login__3hAey")))
+# авторизация
+        driver.find_element(*Locators.LOGIN_FIELD).send_keys(Constants.TEST_EMAIL)
+        driver.find_element(*Locators.PASSWORD_FIELD).send_keys(Constants.SHORT_PASSWORD)
+        driver.find_element(*Locators.LOGIN_BUTTON).click()
 
 # ожидание появления ошибки
-WebDriverWait(driver, 3).until(expected_conditions.visibility_of_element_located((By.CSS_SELECTOR, "#root > div > main > div > form > fieldset:nth-child(3) > div > p")))
+        WebDriverWait(driver, 3).until(expected_conditions.visibility_of_element_located((By.XPATH, ".//p[contains(text(),'Некорректный пароль')]")))
 
 # Проверка корректности текста ошибки
-expected_title =  f"Некорректный пароль"
-fact_title = driver.find_element(By.CSS_SELECTOR, "#root > div > main > div > form > fieldset:nth-child(3) > div > p")
-assert fact_title.text == expected_title
+        expected_title =  f"Некорректный пароль"
+        fact_title = driver.find_element(*Locators.INCORRECT_PASSWORD)
+        assert fact_title.text == expected_title
 

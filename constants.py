@@ -1,4 +1,5 @@
 class Constants:
+    URL = 'https://stellarburgers.nomoreparties.site/'
     NAME = 'Серж'
     TEST_EMAIL = 'voknepash@yandex.ru'
     EXIST_EMAIL = '123@ya.ru'
