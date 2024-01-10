@@ -9,7 +9,7 @@ class TestAuthRestore:
     def test_auth_restore_pass_form(self, driver):
         # переход в форму Восстановить пароль через кнопку Личный кабинет
         WebDriverWait(driver, 3).until(
-            expected_conditions.visibility_of_element_located((By.XPATH, ".//p[contains(text(),'Личный Кабинет')]")))
+            expected_conditions.visibility_of_element_located(Locators.LK_BUTTON))
         driver.find_element(*Locators.LK_BUTTON).click()
         driver.find_element(*Locators.RECOVER_PASSWORD).click()
 
@@ -17,7 +17,7 @@ class TestAuthRestore:
         driver.find_element(*Locators.BUTTON_ENTER_ACCOUNT_FROM_RESTORE_FORM).click()
 
 # ожидание появления формы авторизации
-        WebDriverWait(driver, 3).until(expected_conditions.visibility_of_element_located((By.CLASS_NAME, "Auth_login__3hAey")))
+        WebDriverWait(driver, 3).until(expected_conditions.visibility_of_element_located(Locators.AUTH_FORM))
 
 # Проверка корректной авторизации
         driver.find_element(*Locators.LOGIN_FIELD).send_keys(Constants.TEST_EMAIL)
@@ -25,7 +25,6 @@ class TestAuthRestore:
         driver.find_element(*Locators.LOGIN_BUTTON).click()
 
 # проверка редиректа на главную страницу
-        WebDriverWait(driver, 3).until(expected_conditions.visibility_of_element_located((By.XPATH, ".//h1[text()='Соберите бургер']")))
+        WebDriverWait(driver, 3).until(expected_conditions.visibility_of_element_located(Locators.PLACE_ORDER))
         current_url = driver.current_url
         assert current_url == 'https://stellarburgers.nomoreparties.site/'
-        driver.quit()

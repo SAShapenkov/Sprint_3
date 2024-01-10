@@ -9,8 +9,10 @@ faker = Faker()
 email = faker.email()
 class TestCorrectReg:
     def test_correct_registration(self, driver):
-
-        driver.get("https://stellarburgers.nomoreparties.site/register")
+        WebDriverWait(driver, 3).until(
+            expected_conditions.visibility_of_element_located(Locators.LK_BUTTON))
+        driver.find_element(*Locators.LK_BUTTON).click()
+        driver.find_element(*Locators.REGISTRATION_BUTTON).click()
 
 # Заполнение полей регистрации
 
@@ -20,18 +22,19 @@ class TestCorrectReg:
         driver.find_element(*Locators.REGISTRATION_BUTTON).click()
 
 # ожидание появления формы авторизации
-        WebDriverWait(driver, 3).until(expected_conditions.visibility_of_element_located((By.CLASS_NAME, "Auth_login__3hAey")))
+        WebDriverWait(driver, 3).until(expected_conditions.visibility_of_element_located(Locators.AUTH_FORM))
 
 # Проверка корректной авторизации новым пользователем
     def test_auth_new_user(self, driver):
-        driver.get("https://stellarburgers.nomoreparties.site/login")
+        WebDriverWait(driver, 3).until(
+            expected_conditions.visibility_of_element_located(Locators.LK_BUTTON))
+        driver.find_element(*Locators.LK_BUTTON).click()
         driver.find_element(*Locators.LOGIN_FIELD).send_keys(email)
         driver.find_element(*Locators.PASSWORD_FIELD).send_keys(Constants.PASSWORD)
         driver.find_element(*Locators.LOGIN_BUTTON).click()
 
 # проверка редиректа на главную страницу
         WebDriverWait(driver, 3).until(
-            expected_conditions.visibility_of_element_located((By.XPATH, ".//h1[text()='Соберите бургер']")))
+            expected_conditions.visibility_of_element_located(Locators.PLACE_ORDER))
         current_url = driver.current_url
         assert current_url == 'https://stellarburgers.nomoreparties.site/'
-        driver.quit()

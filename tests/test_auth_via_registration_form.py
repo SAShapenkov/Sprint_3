@@ -9,7 +9,7 @@ class TestAuthReg:
     def test_auth_reg_form(self, driver):
         # переход в форму регистрации через Личный кабинет
         WebDriverWait(driver, 3).until(
-            expected_conditions.visibility_of_element_located((By.XPATH, ".//p[contains(text(),'Личный Кабинет')]")))
+            expected_conditions.visibility_of_element_located(Locators.LK_BUTTON))
         driver.find_element(*Locators.LK_BUTTON).click()
         driver.find_element(*Locators.REGISTRATION_BUTTON).click()
 
@@ -17,7 +17,7 @@ class TestAuthReg:
         driver.find_element(*Locators.LOGIN_VIA_REGISTRATION).click()
 
 # ожидание появления формы авторизации
-        WebDriverWait(driver, 3).until(expected_conditions.visibility_of_element_located((By.CLASS_NAME, "Auth_login__3hAey")))
+        WebDriverWait(driver, 3).until(expected_conditions.visibility_of_element_located(Locators.AUTH_FORM))
 
 # Проверка корректной авторизации
         driver.find_element(*Locators.LOGIN_FIELD).send_keys(Constants.TEST_EMAIL)
@@ -25,7 +25,6 @@ class TestAuthReg:
         driver.find_element(*Locators.LOGIN_BUTTON).click()
 
 # проверка редиректа на главную страницу
-        WebDriverWait(driver, 3).until(expected_conditions.visibility_of_element_located((By.XPATH, ".//h1[text()='Соберите бургер']")))
+        WebDriverWait(driver, 3).until(expected_conditions.visibility_of_element_located(Locators.PLACE_ORDER))
         current_url = driver.current_url
         assert current_url == 'https://stellarburgers.nomoreparties.site/'
-        driver.quit()

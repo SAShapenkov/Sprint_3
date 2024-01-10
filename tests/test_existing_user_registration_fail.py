@@ -7,8 +7,10 @@ from locators import Locators
 
 class TestExistingReg:
     def test_existing_user_registration(self, driver):
-
-        driver.get("https://stellarburgers.nomoreparties.site/register")
+        WebDriverWait(driver, 3).until(
+            expected_conditions.visibility_of_element_located(Locators.LK_BUTTON))
+        driver.find_element(*Locators.LK_BUTTON).click()
+        driver.find_element(*Locators.REGISTRATION_BUTTON).click()
 
 # Заполнение полей регистрации
 
@@ -18,11 +20,10 @@ class TestExistingReg:
         driver.find_element(*Locators.REGISTRATION_BUTTON).click()
 
 # ожидание появления ошибки
-        WebDriverWait(driver, 3).until(expected_conditions.visibility_of_element_located((By.CSS_SELECTOR, "#root > div > main > div > p")))
+        WebDriverWait(driver, 3).until(expected_conditions.visibility_of_element_located(Locators.EXISTING_USER))
 
 # Проверка корректности текста ошибки
         expected_title =  f"Такой пользователь уже существует"
         fact_title = driver.find_element(*Locators.EXISTING_USER)
         assert fact_title.text == expected_title
-        driver.quit()
 

@@ -7,9 +7,11 @@ from locators import Locators
 
 class TestLogOut:
     def test_logout(self, driver):
-        driver.get("https://stellarburgers.nomoreparties.site/login")
+        WebDriverWait(driver, 3).until(
+            expected_conditions.visibility_of_element_located(Locators.LK_BUTTON))
+        driver.find_element(*Locators.LK_BUTTON).click()
 # ожидание появления формы авторизации
-        WebDriverWait(driver, 3).until(expected_conditions.visibility_of_element_located((By.CLASS_NAME, "Auth_login__3hAey")))
+        WebDriverWait(driver, 3).until(expected_conditions.visibility_of_element_located(Locators.AUTH_FORM))
 # авторизация
         driver.find_element(*Locators.LOGIN_FIELD).send_keys(Constants.TEST_EMAIL)
         driver.find_element(*Locators.PASSWORD_FIELD).send_keys(Constants.PASSWORD)
@@ -17,21 +19,20 @@ class TestLogOut:
 
 # ожидание появления кнопки
         WebDriverWait(driver, 3).until(
-            expected_conditions.visibility_of_element_located((By.XPATH, ".//p[contains(text(),'Личный Кабинет')]")))
+            expected_conditions.visibility_of_element_located(Locators.LK_BUTTON))
 
 # переход в личный кабинет по кнопке Личный кабинет
         driver.find_element(*Locators.LK_BUTTON).click()
 
 # ожидание появления списка пунктов в кабинете
-        WebDriverWait(driver, 3).until(expected_conditions.visibility_of_element_located((By.CLASS_NAME, "Account_listItem__35dAP")))
+        WebDriverWait(driver, 3).until(expected_conditions.visibility_of_element_located(Locators.LK_LIST))
 
 # нажатие на кнопку Выход
         driver.find_element(*Locators.LOGOUT_PERSONAL_ACCOUNT).click()
 
 # ожидание появления формы авторизации
-        WebDriverWait(driver, 3).until(expected_conditions.visibility_of_element_located((By.CLASS_NAME, "Auth_login__3hAey")))
+        WebDriverWait(driver, 3).until(expected_conditions.visibility_of_element_located(Locators.AUTH_FORM))
 
 # проверка редиректа на страницу авторизации
         current_url = driver.current_url
         assert current_url == 'https://stellarburgers.nomoreparties.site/login'
-        driver.quit()
